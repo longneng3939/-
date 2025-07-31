@@ -1,0 +1,388 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>A Romantic Message For You</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Georgia', serif;
+        }
+
+        body {
+            background: linear-gradient(135deg, #0f0c29, #302b63, #24243e);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 20px;
+            color: #e6e6e6;
+        }
+
+        .container {
+            max-width: 1000px;
+            width: 100%;
+            background: rgba(20, 20, 40, 0.85);
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+            padding: 40px;
+            margin-top: 30px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .container::before {
+            content: "";
+            position: absolute;
+            top: -50px;
+            right: -50px;
+            width: 150px;
+            height: 150px;
+            background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="%23ff6b8b"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>') no-repeat;
+            opacity: 0.3;
+            z-index: 0;
+        }
+
+        h1 {
+            text-align: center;
+            font-size: 2.8rem;
+            margin-bottom: 20px;
+            color: #ff6b8b;
+            text-shadow: 0 0 10px rgba(255, 107, 139, 0.5);
+            position: relative;
+        }
+
+        h1::after {
+            content: "";
+            display: block;
+            width: 100px;
+            height: 3px;
+            background: linear-gradient(to right, #ff6b8b, #ff8e9b);
+            margin: 15px auto;
+            border-radius: 3px;
+        }
+
+        .content {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 40px;
+            margin: 30px 0;
+            position: relative;
+            z-index: 1;
+        }
+
+        .text-content {
+            flex: 1;
+            min-width: 300px;
+        }
+
+        .image-container {
+            flex: 1;
+            min-width: 300px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .romantic-image {
+            width: 100%;
+            max-width: 400px;
+            height: auto;
+            border-radius: 15px;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.5);
+            transition: transform 0.3s ease;
+            border: 5px solid rgba(255, 255, 255, 0.15);
+        }
+
+        .romantic-image:hover {
+            transform: scale(1.03);
+        }
+
+        p {
+            font-size: 1.2rem;
+            line-height: 1.8;
+            margin-bottom: 20px;
+            text-align: justify;
+        }
+
+        .highlight {
+            background: linear-gradient(120deg, rgba(255, 107, 139, 0.3), rgba(255, 142, 155, 0.3));
+            padding: 3px 8px;
+            border-radius: 8px;
+            font-weight: bold;
+        }
+
+        .button-container {
+            text-align: center;
+            margin-top: 30px;
+        }
+
+        .show-image-btn {
+            background: linear-gradient(45deg, #ff6b8b, #ff8e9b);
+            color: white;
+            border: none;
+            padding: 15px 40px;
+            font-size: 1.2rem;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 5px 15px rgba(255, 107, 139, 0.4);
+            font-weight: bold;
+            letter-spacing: 1px;
+        }
+
+        .show-image-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(255, 107, 139, 0.6);
+        }
+
+        .show-image-btn:active {
+            transform: translateY(1px);
+        }
+
+        .show-image-btn i {
+            margin-left: 8px;
+        }
+
+        /* Modal Styles */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.9);
+            z-index: 100;
+            justify-content: center;
+            align-items: center;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .modal.show {
+            display: flex;
+            opacity: 1;
+        }
+
+        .modal-content {
+            position: relative;
+            max-width: 90%;
+            max-height: 90%;
+        }
+
+        .modal-image {
+            max-width: 100%;
+            max-height: 80vh;
+            border-radius: 10px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.6);
+            border: 8px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .close-modal {
+            position: absolute;
+            top: -20px;
+            right: -20px;
+            color: white;
+            font-size: 2.5rem;
+            cursor: pointer;
+            transition: transform 0.3s ease;
+            background: rgba(255, 107, 139, 0.8);
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            border: 3px solid white;
+        }
+
+        .close-modal:hover {
+            transform: rotate(90deg);
+            background: rgba(255, 107, 139, 1);
+        }
+
+        .footer {
+            margin-top: 40px;
+            text-align: center;
+            font-style: italic;
+            color: #b8b8b8;
+            font-size: 1.1rem;
+        }
+
+        .redirect-message {
+            text-align: center;
+            margin-top: 20px;
+            font-size: 1.1rem;
+            color: #ff6b8b;
+            font-weight: bold;
+            display: none;
+        }
+
+        /* Add some stars in the background */
+        .stars {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            pointer-events: none;
+        }
+
+        .star {
+            position: absolute;
+            background-color: white;
+            border-radius: 50%;
+            animation: twinkle 4s infinite;
+        }
+
+        @keyframes twinkle {
+            0% { opacity: 0.3; }
+            50% { opacity: 1; }
+            100% { opacity: 0.3; }
+        }
+
+        @media (max-width: 768px) {
+            .content {
+                flex-direction: column;
+            }
+            
+            h1 {
+                font-size: 2.2rem;
+            }
+            
+            .container {
+                padding: 25px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="stars" id="stars"></div>
+    
+    <div class="container">
+        <h1>A Message For My dearest</h1>
+        
+        <div class="content">
+            <div class="text-content">
+                <p>My dearest love,</p>
+                <p>Bby right now im typing this code with my heart and soul in it but i hope you like this T-T. Im not good at coding but i also try my best to do it for you sorry na for noob website</p>
+                <p>You are the most <span class="highlight">beautiful person</span> I've ever met, inside and out. Your kindness, intelligence, and warmth continue to inspire me every day.</p>
+                <p>i really appreciate every moment we have during our long distance relationship and i really do appreicate everymoment every presecne that you always stay with me bby</p>
+                <p>And im really happy to meet a wonderful and kind person like you bby you. your beauty like a shining star in the night sky.and your smile like a sun that bright and lead my life.</p>
+                <p>And thank you bby for staying with me until now and happy our anniversary 456 days. This amount of number show our pain our sad our happy and our precious moment</p>
+                <p>Forever yours,</p>
+                <p><strong>Your lovely b long</strong></p>
+            </div>
+            
+            <div class="image-container">
+                <img src="img/sart.jpg" alt="Romantic image" class="romantic-image">
+            </div>
+        </div>
+        
+        <div class="button-container">
+            <button class="show-image-btn" id="showImageBtn">
+                Joch nis mor hei<i class="fas fa-heart"></i>
+            </button>
+        </div>
+        
+        <div class="redirect-message" id="redirectMessage">
+            Redirecting to your special surprise... ❤️
+        </div>
+        
+        <div class="footer">
+            "Bat ey bat ban tae bat o min ban" - Kimlong Neng
+        </div>
+    </div>
+    
+    <!-- Modal for larger image -->
+    <div class="modal" id="imageModal">
+        <div class="modal-content">
+            <img src="img/hehe.jpg" alt="Romantic image" class="modal-image">
+            <div class="close-modal" id="closeModal">&times;</div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const modal = document.getElementById('imageModal');
+            const btn = document.getElementById('showImageBtn');
+            const closeBtn = document.getElementById('closeModal');
+            const redirectMessage = document.getElementById('redirectMessage');
+            
+            // Create stars for the midnight background
+            createStars();
+            
+            // Show modal when button is clicked
+            btn.addEventListener('click', function() {
+                modal.classList.add('show');
+                document.body.style.overflow = 'hidden'; // Prevent scrolling when modal is open
+            });
+            
+            // Close modal when close button is clicked
+            closeBtn.addEventListener('click', function() {
+                closeModalWithRedirect();
+            });
+            
+            // Close modal when clicking outside the image
+            modal.addEventListener('click', function(e) {
+                if (e.target === modal) {
+                    closeModalWithRedirect();
+                }
+            });
+            
+            // Close modal with Escape key
+            document.addEventListener('keydown', function(e) {
+                if (e.key === 'Escape' && modal.classList.contains('show')) {
+                    closeModalWithRedirect();
+                }
+            });
+            
+            // Function to close modal and redirect
+            function closeModalWithRedirect() {
+                modal.classList.remove('show');
+                document.body.style.overflow = 'auto';
+                
+                // Show redirect message
+                redirectMessage.style.display = 'block';
+                
+                // Redirect after 3 seconds (3000 milliseconds)
+                setTimeout(function() {
+                    // Change this URL to your desired destination
+                    window.location.href = 'https://www.youtube.com/watch?v=EBHOXV1ihus&list=RDEBHOXV1ihus&start_radio=1'; 
+                }, 3000);
+            }
+            
+            // Create twinkling stars in the background
+            function createStars() {
+                const starsContainer = document.getElementById('stars');
+                const starsCount = 150;
+                
+                for (let i = 0; i < starsCount; i++) {
+                    const star = document.createElement('div');
+                    star.classList.add('star');
+                    
+                    // Random size between 1 and 3 pixels
+                    const size = Math.random() * 2 + 1;
+                    star.style.width = `${size}px`;
+                    star.style.height = `${size}px`;
+                    
+                    // Random position
+                    star.style.left = `${Math.random() * 100}%`;
+                    star.style.top = `${Math.random() * 100}%`;
+                    
+                    // Random animation delay
+                    star.style.animationDelay = `${Math.random() * 4}s`;
+                    
+                    starsContainer.appendChild(star);
+                }
+            }
+        });
+    </script>
+</body>
+</html>

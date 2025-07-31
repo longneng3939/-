@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Are u really my Girlfriend</title>
+    <link rel="stylesheet" href="style.css">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Our Love Story</title>
+</head>
+<body>
+    <div class="starry-background"></div>
+    <div class="stars" id="stars"></div>
+    <div class="moon"></div>
+    <div class="floating-hearts" id="hearts"></div>
+    
+    <div class="container">
+        <header class="header">
+            <h1>Our Love Story</h1>
+            <p class="subtitle">Where we met and how we met</p>
+        </header>
+
+        <main class="main-content">
+            <section class="story-section">
+                <h2>How We Met</h2>
+                <div class="story-text">
+                    <p>It was a random that i barely unexpect just a small coiencidence can turn our fate 180 degree, just a random days that i went buy the perfume that the store at national road 4 and also back than b and reach was a friend he told me to come into his house. <bold>at first i thought nah im too lazy to do that but in the end i thought is not hurt to visit him a little bit</bold>.</p>
+                    <p>So i went there and i see your whole family so in first im not really think that much just call reach b thlai as normal but the unexpect thing back than we just joking we never thought we would end up dating with u o.</p>
+                    <p>Back than im really not think that much. Back than i saw u coming down and see u at the first time the word that come into my mind it is o neary jern lern. back than just to make sure its that relly reach little sister i ask reach but he said yes. and i stun a little bit but i dont think too much like</p>
+                </div>
+                <div class="date-badge">Since [12/4/2024]</div>
+            </section>
+
+            <section class="photo-section">
+                <div class="photo-frame">
+                    <div class="photo-placeholder">
+                  
+                    
+                    <img src="img/bro reach.jpg" alt="My beautiful girlfriend">
+                
+                </div>
+                <img src="img/firstpic.jpg" alt="My beautiful girlfriend">
+            </section>
+        </main>
+    </div>
+
+    <div class="music-controls">
+        <p>Click down here</p>
+        <button class="music-btn" id="musicBtn" onclick="toggleMusic()">🎵</button>
+        <div class="volume-control">
+            <span style="color: white; font-size: 0.8rem;">🔊</span>
+            <input type="range" class="volume-slider" id="volumeSlider" min="0" max="100" value="50" onchange="changeVolume()">
+        </div>
+    </div>
+            <div class="navigation-section">
+            <a href="secondpage.html" class="next-btn">
+                This is the beginning of our love story
+                <span class="arrow">→</span>
+            </a>
+        </div>
+    </div>
+
+
+    <audio id="backgroundMusic" loop>
+        
+        <source src="love-song.mp3" type="audio/mp3">
+        <!-- Add your music file here -->
+    </audio>
+
+    <script>
+        // Create starry sky
+        function createStars() {
+            const starsContainer = document.getElementById('stars');
+            
+            // Create regular stars
+            for (let i = 0; i < 200; i++) {
+                const star = document.createElement('div');
+                star.classList.add('star');
+                star.style.left = Math.random() * 100 + '%';
+                star.style.top = Math.random() * 100 + '%';
+                star.style.width = Math.random() * 3 + 1 + 'px';
+                star.style.height = star.style.width;
+                star.style.animationDelay = Math.random() * 3 + 's';
+                star.style.animationDuration = (Math.random() * 2 + 2) + 's';
+                starsContainer.appendChild(star);
+            }
+
+            // Create shooting stars
+            setInterval(() => {
+                const shootingStar = document.createElement('div');
+                shootingStar.classList.add('shooting-star');
+                shootingStar.style.left = Math.random() * 100 + '%';
+                shootingStar.style.top = Math.random() * 50 + '%';
+                shootingStar.style.width = Math.random() * 100 + 50 + 'px';
+                shootingStar.style.animationDuration = (Math.random() * 2 + 2) + 's';
+                starsContainer.appendChild(shootingStar);
+                
+                setTimeout(() => {
+                    shootingStar.remove();
+                }, 3000);
+            }, 8000);
+        }
+
+        // Initialize stars when page loads
+        document.addEventListener('DOMContentLoaded', createStars);
+
+        // Floating hearts animation
+        function createHeart() {
+            const heart = document.createElement('div');
+            heart.classList.add('heart');
+            heart.innerHTML = '♥';
+            heart.style.left = Math.random() * 100 + '%';
+            heart.style.animationDuration = (Math.random() * 3 + 2) + 's';
+            heart.style.opacity = Math.random() * 0.3 + 0.1;
+            heart.style.fontSize = (Math.random() * 10 + 15) + 'px';
+            
+            document.getElementById('hearts').appendChild(heart);
+            
+            setTimeout(() => {
+                heart.remove();
+            }, 5000);
+        }
+
+        setInterval(createHeart, 2000);
+
+        // Music controls
+        const music = document.getElementById('backgroundMusic');
+        const musicBtn = document.getElementById('musicBtn');
+        const volumeSlider = document.getElementById('volumeSlider');
+        let isPlaying = false;
+
+        function toggleMusic() {
+            if (isPlaying) {
+                music.pause();
+                musicBtn.innerHTML = '🎵';
+                musicBtn.classList.remove('playing');
+                isPlaying = false;
+            } else {
+                music.play().then(() => {
+                    musicBtn.innerHTML = '⏸️';
+                    musicBtn.classList.add('playing');
+                    isPlaying = true;
+                }).catch(error => {
+                    console.log('Please add a music file to enable audio');
+                    alert('Please add your music file (your-love-song.mp3) to enable background music!');
+                });
+            }
+        }
+
+        function changeVolume() {
+            music.volume = volumeSlider.value / 100;
+        }
+
+        // Set initial volume
+        music.volume = 0.5;
+
+        // Smooth scrolling for better experience
+        document.addEventListener('DOMContentLoaded', function() {
+            // Add entrance animations
+            setTimeout(() => {
+                document.querySelector('.header').style.opacity = '1';
+            }, 500);
+        });
+
+        // Add some interactive sparkles on click
+        document.addEventListener('click', function(e) {
+            if (e.target.closest('.photo-frame')) {
+                createSparkle(e.clientX, e.clientY);
+            }
+        });
+
+        function createSparkle(x, y) {
+            const sparkle = document.createElement('div');
+            sparkle.innerHTML = '✨';
+            sparkle.style.position = 'fixed';
+            sparkle.style.left = x + 'px';
+            sparkle.style.top = y + 'px';
+            sparkle.style.fontSize = '20px';
+            sparkle.style.zIndex = '1000';
+            sparkle.style.pointerEvents = 'none';
+            sparkle.style.animation = 'sparkleUp 1s ease-out forwards';
+            
+            document.body.appendChild(sparkle);
+            
+            setTimeout(() => sparkle.remove(), 1000);
+        }
+
+        // Add sparkle animation
+        const sparkleStyle = document.createElement('style');
+        sparkleStyle.textContent = `
+            @keyframes sparkleUp {
+                0% { transform: translateY(0) scale(0); opacity: 1; }
+                100% { transform: translateY(-50px) scale(1); opacity: 0; }
+            }
+        `;
+        document.head.appendChild(sparkleStyle);
+    </script>
+</body>
+</html>

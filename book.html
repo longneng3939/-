@@ -1,0 +1,389 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Shooting Star Love</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            background: #0a0a2e;
+            overflow: hidden;
+            font-family: 'Arial', sans-serif;
+            height: 100vh;
+            position: relative;
+        }
+
+        .stars {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background: transparent;
+        }
+
+        .star {
+            position: absolute;
+            background: white;
+            border-radius: 50%;
+            animation: twinkle 2s infinite alternate;
+        }
+
+        @keyframes twinkle {
+            0% { opacity: 0.3; }
+            100% { opacity: 1; }
+        }
+
+        .shooting-star {
+            position: absolute;
+            width: 2px;
+            height: 2px;
+            background: linear-gradient(45deg, #fff, #ffeb3b, #ff9800);
+            border-radius: 50%;
+            box-shadow: 0 0 10px #fff;
+        }
+
+        .shooting-star::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -300px;
+            width: 300px;
+            height: 1px;
+            background: linear-gradient(to right, transparent, #fff, transparent);
+            animation: shoot 3s linear infinite;
+        }
+
+        @keyframes shoot {
+            0% {
+                transform: translateX(-100px) translateY(100px);
+                opacity: 0;
+            }
+            10% {
+                opacity: 1;
+            }
+            90% {
+                opacity: 1;
+            }
+            100% {
+                transform: translateX(calc(100vw + 300px)) translateY(-100px);
+                opacity: 0;
+            }
+        }
+
+        .love-text {
+            position: absolute;
+            color: #fff;
+            font-size: 2.5em;
+            font-weight: bold;
+            text-shadow: 0 0 20px rgba(255, 255, 255, 0.8);
+            opacity: 0;
+            animation: fadeInOut 4s infinite;
+        }
+
+        .spanish-text {
+            font-size: 1.8em;
+            color: #ffeb3b;
+        }
+
+        @keyframes fadeInOut {
+            0%, 100% { opacity: 0; transform: scale(0.8); }
+            50% { opacity: 1; transform: scale(1); }
+        }
+
+        @keyframes popToward {
+            0% { 
+                opacity: 0; 
+                transform: scale(0.1) translateZ(-1000px);
+                filter: blur(10px);
+            }
+            30% {
+                opacity: 0.8;
+                transform: scale(1.5) translateZ(-100px);
+                filter: blur(2px);
+            }
+            60% {
+                opacity: 1;
+                transform: scale(2.2) translateZ(50px);
+                filter: blur(0px);
+                text-shadow: 0 0 30px rgba(255, 255, 255, 1), 0 0 60px rgba(255, 255, 255, 0.8);
+            }
+            100% { 
+                opacity: 0; 
+                transform: scale(3) translateZ(200px);
+                filter: blur(5px);
+            }
+        }
+
+        .pop-text {
+            animation: popToward 4s ease-out infinite;
+            transform-style: preserve-3d;
+            perspective: 1000px;
+            font-weight: 900;
+            letter-spacing: 2px;
+            background: linear-gradient(45deg, #ff6b6b, #4ecdc4, #45b7d1, #96ceb4);
+            background-size: 400% 400%;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            animation: popToward 4s ease-out infinite, gradientShift 3s ease-in-out infinite;
+        }
+
+        @keyframes gradientShift {
+            0%, 100% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+        }
+
+        .flying-photo {
+            position: absolute;
+            width: 80px;
+            height: 80px;
+            border-radius: 10px;
+            border: 3px solid #fff;
+            box-shadow: 0 0 20px rgba(255, 255, 255, 0.5);
+            background: linear-gradient(45deg, #ff6b6b, #4ecdc4);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+            opacity: 0;
+        }
+
+        .photo-trail {
+            position: absolute;
+            width: 100px;
+            height: 2px;
+            background: linear-gradient(to right, transparent, rgba(255, 255, 255, 0.6), transparent);
+            border-radius: 50%;
+        }
+
+        .upload-area {
+            position: absolute;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(255, 255, 255, 0.1);
+            border: 2px dashed rgba(255, 255, 255, 0.5);
+            border-radius: 10px;
+            padding: 20px;
+            text-align: center;
+            color: white;
+            backdrop-filter: blur(10px);
+        }
+
+        .upload-area input {
+            display: none;
+        }
+
+        .upload-btn {
+            background: linear-gradient(45deg, #ff6b6b, #4ecdc4);
+            border: none;
+            padding: 10px 20px;
+            border-radius: 25px;
+            color: white;
+            cursor: pointer;
+            margin: 10px;
+            font-weight: bold;
+            transition: transform 0.3s ease;
+        }
+
+        .upload-btn:hover {
+            transform: scale(1.05);
+        }
+
+        .controls {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: rgba(0, 0, 0, 0.3);
+            padding: 15px;
+            border-radius: 10px;
+            backdrop-filter: blur(10px);
+        }
+
+        .control-btn {
+            background: linear-gradient(45deg, #667eea, #764ba2);
+            border: none;
+            padding: 8px 15px;
+            margin: 5px;
+            border-radius: 20px;
+            color: white;
+            cursor: pointer;
+            font-size: 12px;
+        }
+
+        @keyframes flyAcross {
+            0% {
+                transform: translateX(-100px) translateY(50px) rotate(0deg);
+                opacity: 0;
+            }
+            10% {
+                opacity: 1;
+            }
+            90% {
+                opacity: 1;
+            }
+            100% {
+                transform: translateX(calc(100vw + 100px)) translateY(-50px) rotate(360deg);
+                opacity: 0;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="stars" id="stars"></div>
+    
+    <div class="love-text spanish-text pop-text" style="top: 20%; left: 15%; animation-delay: 0s;">Me encantas</div>
+    <div class="love-text pop-text" style="top: 35%; right: 20%; animation-delay: 1.5s;">Te Amo</div>
+    <div class="love-text pop-text" style="bottom: 30%; left: 10%; animation-delay: 3s;">My love</div>
+    <div class="love-text spanish-text pop-text" style="bottom: 20%; right: 25%; animation-delay: 4.5s;">Eres preciosa</div>
+    <div class="love-text pop-text" style="top: 50%; left: 50%; transform: translateX(-50%); animation-delay: 6s;">Love u bby</div>
+
+    <div class="controls">
+        <button class="control-btn" onclick="addShootingStar()">Add Shooting Star</button>
+        <button class="control-btn" onclick="launchPhoto()">Launch Photo</button>
+        <button class="control-btn" onclick="toggleAnimation()">Pause/Play</button>
+    </div>
+
+    <div class="upload-area">
+        <p>Upload your photos to make them fly like shooting stars!</p>
+        <input type="file" id="photoInput" accept="image/*" multiple onchange="handlePhotoUpload(event)">
+        <button class="upload-btn" onclick="document.getElementById('photoInput').click()">Choose Photos</button>
+        <p style="font-size: 12px; opacity: 0.7;">Click "Launch Photo" to send them flying across the sky</p>
+    </div>
+
+    <script>
+        let uploadedPhotos = [];
+        let animationPaused = false;
+
+        // Create background stars
+        function createStars() {
+            const starsContainer = document.getElementById('stars');
+            for (let i = 0; i < 200; i++) {
+                const star = document.createElement('div');
+                star.className = 'star';
+                star.style.left = Math.random() * 100 + '%';
+                star.style.top = Math.random() * 100 + '%';
+                star.style.width = star.style.height = Math.random() * 3 + 1 + 'px';
+                star.style.animationDelay = Math.random() * 2 + 's';
+                starsContainer.appendChild(star);
+            }
+        }
+
+        // Create shooting star effect
+        function addShootingStar() {
+            const shootingStar = document.createElement('div');
+            shootingStar.className = 'shooting-star';
+            shootingStar.style.left = Math.random() * 100 + '%';
+            shootingStar.style.top = Math.random() * 50 + '%';
+            shootingStar.style.animationDelay = Math.random() * 2 + 's';
+            document.body.appendChild(shootingStar);
+
+            setTimeout(() => {
+                if (shootingStar.parentNode) {
+                    shootingStar.parentNode.removeChild(shootingStar);
+                }
+            }, 3000);
+        }
+
+        // Handle photo uploads
+        function handlePhotoUpload(event) {
+            const files = event.target.files;
+            for (let file of files) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    uploadedPhotos.push(e.target.result);
+                };
+                reader.readAsDataURL(file);
+            }
+        }
+
+        // Launch photo across screen
+        function launchPhoto() {
+            if (uploadedPhotos.length === 0) {
+                // Create placeholder photo if none uploaded
+                createPlaceholderPhoto();
+                return;
+            }
+
+            const photoIndex = Math.floor(Math.random() * uploadedPhotos.length);
+            const photo = document.createElement('div');
+            photo.className = 'flying-photo';
+            photo.style.backgroundImage = `url(${uploadedPhotos[photoIndex]})`;
+            photo.style.backgroundSize = 'cover';
+            photo.style.backgroundPosition = 'center';
+            photo.style.left = '-100px';
+            photo.style.top = Math.random() * (window.innerHeight - 100) + 'px';
+            photo.style.animation = 'flyAcross 4s linear forwards';
+
+            // Add trailing effect
+            const trail = document.createElement('div');
+            trail.className = 'photo-trail';
+            trail.style.left = '-100px';
+            trail.style.top = photo.style.top;
+            trail.style.animation = 'flyAcross 4s linear forwards';
+
+            document.body.appendChild(trail);
+            document.body.appendChild(photo);
+
+            setTimeout(() => {
+                if (photo.parentNode) photo.parentNode.removeChild(photo);
+                if (trail.parentNode) trail.parentNode.removeChild(trail);
+            }, 4000);
+        }
+
+        function createPlaceholderPhoto() {
+            const photo = document.createElement('div');
+            photo.className = 'flying-photo';
+            photo.innerHTML = '💕';
+            photo.style.fontSize = '30px';
+            photo.style.left = '-100px';
+            photo.style.top = Math.random() * (window.innerHeight - 100) + 'px';
+            photo.style.animation = 'flyAcross 4s linear forwards';
+
+            const trail = document.createElement('div');
+            trail.className = 'photo-trail';
+            trail.style.left = '-100px';
+            trail.style.top = photo.style.top;
+            trail.style.animation = 'flyAcross 4s linear forwards';
+
+            document.body.appendChild(trail);
+            document.body.appendChild(photo);
+
+            setTimeout(() => {
+                if (photo.parentNode) photo.parentNode.removeChild(photo);
+                if (trail.parentNode) trail.parentNode.removeChild(trail);
+            }, 4000);
+        }
+
+        function toggleAnimation() {
+            animationPaused = !animationPaused;
+            document.body.style.animationPlayState = animationPaused ? 'paused' : 'running';
+            const allElements = document.querySelectorAll('*');
+            allElements.forEach(el => {
+                el.style.animationPlayState = animationPaused ? 'paused' : 'running';
+            });
+        }
+
+        // Auto-generate shooting stars
+        function autoShootingStars() {
+            if (!animationPaused) {
+                addShootingStar();
+            }
+            setTimeout(autoShootingStars, Math.random() * 3000 + 2000);
+        }
+
+        // Initialize
+        createStars();
+        autoShootingStars();
+
+        // Auto-launch photos periodically if uploaded
+        setInterval(() => {
+            if (uploadedPhotos.length > 0 && Math.random() > 0.7 && !animationPaused) {
+                launchPhoto();
+            }
+        }, 3000);
+    </script>
+</body>
+</html>

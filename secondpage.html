@@ -1,0 +1,574 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Our Precious Memories</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Arial', sans-serif;
+            background: #0a0a0a;
+            min-height: 100vh;
+            overflow-x: hidden;
+            position: relative;
+            color: white;
+        }
+
+        .starry-background {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(to bottom, #0a0a0a 0%, #1a1a2e 50%, #16213e 100%);
+            z-index: -2;
+        }
+
+        .stars {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+        }
+
+        .star {
+            position: absolute;
+            background: white;
+            border-radius: 50%;
+            animation: twinkle 3s ease-in-out infinite;
+        }
+
+        @keyframes twinkle {
+            0%, 100% { opacity: 0.3; transform: scale(1); }
+            50% { opacity: 1; transform: scale(1.2); }
+        }
+
+        .shooting-star {
+            position: absolute;
+            height: 2px;
+            background: linear-gradient(90deg, #fff, transparent);
+            animation: shoot 3s linear infinite;
+        }
+
+        @keyframes shoot {
+            0% {
+                transform: translateX(-100px) translateY(100px);
+                opacity: 0;
+            }
+            10% {
+                opacity: 1;
+            }
+            90% {
+                opacity: 1;
+            }
+            100% {
+                transform: translateX(300px) translateY(-100px);
+                opacity: 0;
+            }
+        }
+
+        .moon {
+            position: fixed;
+            top: 100px;
+            right: 100px;
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #f4f4f4 0%, #e8e8e8 100%);
+            box-shadow: 0 0 30px rgba(255, 255, 255, 0.3);
+            z-index: -1;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            position: relative;
+            z-index: 2;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 60px;
+            color: white;
+        }
+
+        .header h1 {
+            font-size: 3.5rem;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+            animation: glow 2s ease-in-out infinite alternate;
+            background: linear-gradient(45deg, #ffd700, #ff6b6b, #87ceeb);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        @keyframes glow {
+            from { filter: drop-shadow(0 0 10px rgba(255,255,255,0.2)); }
+            to { filter: drop-shadow(0 0 20px rgba(255,255,255,0.4)); }
+        }
+
+        .subtitle {
+            font-size: 1.2rem;
+            opacity: 0.9;
+            font-style: italic;
+        }
+
+        .timeline {
+            position: relative;
+            margin: 50px 0;
+        }
+
+        .timeline::before {
+            content: '';
+            position: absolute;
+            left: 50%;
+            top: 0;
+            bottom: 0;
+            width: 4px;
+            background: linear-gradient(to bottom, #ffd700, #ff6b6b, #87ceeb);
+            transform: translateX(-50%);
+            border-radius: 2px;
+            box-shadow: 0 0 10px rgba(255, 215, 0, 0.5);
+        }
+
+        .memory-item {
+            position: relative;
+            margin: 80px 0;
+            opacity: 0;
+            animation: fadeInUp 1s ease-out forwards;
+        }
+
+        .memory-item:nth-child(1) { animation-delay: 0.2s; }
+        .memory-item:nth-child(2) { animation-delay: 0.4s; }
+        .memory-item:nth-child(3) { animation-delay: 0.6s; }
+        .memory-item:nth-child(4) { animation-delay: 0.8s; }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(50px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .memory-content {
+            width: 45%;
+            padding: 30px;
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(15px);
+            border-radius: 20px;
+            box-shadow: 0 8px 32px rgba(0,0,0,0.3);
+            border: 1px solid rgba(255,255,255,0.1);
+            position: relative;
+            transition: all 0.3s ease;
+        }
+
+        .memory-content:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 45px rgba(0,0,0,0.4);
+        }
+
+        .memory-item:nth-child(odd) .memory-content {
+            margin-left: 0;
+        }
+
+        .memory-item:nth-child(even) .memory-content {
+            margin-left: 55%;
+        }
+
+        .memory-icon {
+            position: absolute;
+            left: 50%;
+            top: 50%;
+            transform: translate(-50%, -50%);
+            width: 60px;
+            height: 60px;
+            background: linear-gradient(45deg, #ffd700, #ff6b6b);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.8rem;
+            box-shadow: 0 0 20px rgba(255, 215, 0, 0.6);
+            animation: pulse 2s ease-in-out infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: translate(-50%, -50%) scale(1); }
+            50% { transform: translate(-50%, -50%) scale(1.1); }
+        }
+
+        .memory-date {
+            position: absolute;
+            top: -15px;
+            right: 20px;
+            background: #ff6b6b;
+            color: white;
+            padding: 8px 15px;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            font-weight: bold;
+            box-shadow: 0 4px 15px rgba(255, 107, 107, 0.3);
+        }
+
+        .memory-title {
+            font-size: 1.8rem;
+            margin-bottom: 15px;
+            color: #ffd700;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.3);
+        }
+
+        .memory-description {
+            font-size: 1.1rem;
+            line-height: 1.6;
+            margin-bottom: 20px;
+            opacity: 0.9;
+        }
+
+        .memory-photo {
+            width: 100%;
+            max-width: 300px;
+            height: auto;
+            background: rgba(255,255,255,0.1);
+            border-radius: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: 2px dashed rgba(255,255,255,0.3);
+            margin: 20px auto;
+            transition: all 0.3s ease;
+        }
+
+        .memory-photo:hover {
+            transform: scale(1.05);
+            border-color: #ffd700;
+        }
+
+        .memory-photo img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            border-radius: 13px;
+        }
+
+        .navigation-section {
+            text-align: center;
+            margin: 60px 0 30px 0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .nav-btn {
+            background: linear-gradient(45deg, #ff6b6b, #ee5a52);
+            border: none;
+            color: white;
+            padding: 15px 30px;
+            font-size: 1.1rem;
+            font-weight: bold;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 8px 25px rgba(255, 107, 107, 0.3);
+            text-decoration: none;
+            display: inline-block;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .nav-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 12px 35px rgba(255, 107, 107, 0.4);
+        }
+
+        .nav-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+            transition: left 0.5s;
+        }
+
+        .nav-btn:hover::before {
+            left: 100%;
+        }
+
+        .back-btn {
+            background: linear-gradient(45deg, #87ceeb, #4682b4);
+        }
+
+        .back-btn:hover {
+            box-shadow: 0 12px 35px rgba(135, 206, 235, 0.4);
+        }
+
+        .floating-hearts {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        .heart {
+            position: absolute;
+            color: rgba(255, 192, 203, 0.3);
+            font-size: 20px;
+            animation: float 6s ease-in-out infinite;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0px) rotate(0deg); }
+            50% { transform: translateY(-20px) rotate(180deg); }
+        }
+
+        @media (max-width: 768px) {
+            .timeline::before {
+                left: 30px;
+            }
+
+            .memory-content {
+                width: calc(100% - 80px);
+                margin-left: 80px !important;
+            }
+
+            .memory-icon {
+                left: 30px;
+            }
+
+            .header h1 {
+                font-size: 2.5rem;
+            }
+
+            .navigation-section {
+                flex-direction: column;
+                gap: 20px;
+            }
+
+            .moon {
+                top: 50px;
+                right: 20px;
+                width: 60px;
+                height: 60px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="starry-background"></div>
+    <div class="stars" id="stars"></div>
+    <div class="moon"></div>
+    <div class="floating-hearts" id="hearts"></div>
+    
+    <div class="container">
+        <header class="header">
+            <h1>Our Precious Memories</h1>
+            <p class="subtitle">Every moment with you is a treasure</p>
+        </header>
+
+        <div class="timeline">
+            <!-- First Call Memory -->
+            <div class="memory-item">
+                <div class="memory-content">
+                    <div class="memory-date">1/5/2024</div>
+                    <h3 class="memory-title">Our First Call</h3>
+                    <p class="memory-description">
+                       Call muy o lerk dombong ker kdei sok somrab b. b min del nirk smarn tha o jea ss b. del b arch proudly yy tha o jea ss b.Call lerk dombong ker mean ah tnei klang somrab yg call muy knea tang pi morng 10 tv dol morng 3 b jg plix ors hz tha bby yy ey klas tae dg tha sby pkach pkach pi neak o.
+                        <div class="memory-photo">
+                        <div style="text-align: center; opacity: 0.7;">
+                    
+                        </div>
+                        <img src="img/firstcall.jpg" alt="Our first photo together">               
+                    </div>
+                    </p>
+                </div>
+                <div class="memory-icon">📞</div>
+            </div>
+
+            <!-- First Meeting Memory -->
+            <div class="memory-item">
+                <div class="memory-content">
+                    <div class="memory-date">3/5/2024</div>
+                    <h3 class="memory-title">Our First Kiss</h3>
+                    <p class="memory-description">
+                       Yy tha first kiss kor min trv doy sa pel ng, kron tah o kiss tporl b tae b jat tok ah ng jea lerk ti 1 del mnus srey therb b. O komhoch mix ban jg bbbyyyyyy
+                         <div class="memory-photo">
+                        <div style="text-align: center; opacity: 0.7;">
+                    
+                        </div>
+                        <img src="img/kiss.jpg" alt="Our first photo together">               
+                    </div>
+                    </p>
+                </div>
+                <div class="memory-icon">💫</div>
+            </div>
+
+            <!-- First Photo Memory -->
+            <div class="memory-item">
+                <div class="memory-content">
+                    <div class="memory-date">19/5/2024</div>
+                    <h3 class="memory-title">Our First Photo Together</h3>
+                    <p class="memory-description">
+                       Ker tha sneha yg reang rork rak nas. thot rub rer kor jub knea sot luch pi family ba dg ktuk sach tae b nv tae sby jit del o dg tha nv pel del o jenh krav muy b tha mean rg ey kert lerng tae b somnang ban o. Hz nv pel del thoot rub ng yg pi neak doch neak srae jol krorng ot dg tha ah ng jea ey jes tah joch jes tah joch tae mean is fun because is our both first time
+                    <div class="memory-photo">
+                        <div style="text-align: center; opacity: 0.7;">
+                     
+                            <p style="font-size: 0.9rem; margin-top: 10px;"></p>
+                        </div>
+                    
+                        <img src="img/photo.jpg" alt="Our first photo together">
+                
+                    </div>
+                </div>
+                <div class="memory-icon">📸</div>
+            </div>
+
+            <!-- Special Memory -->
+            <div class="memory-item">
+                <div class="memory-content">
+                    <div class="memory-date">28/6/2025</div>
+                    <h3 class="memory-title">A Special Memory</h3>
+                    <p class="memory-description">
+                       O kit tha rub ng jea rub tmda yg jub knea tah muy plet. o trv jam tha pel valea del yg jub knea mean ryeak pel klei nas bby yg min sov mean pel tomne ban jub knea. hz o b dg tok lombak o tha o rol ngai lombak avey klas tae tver mix bby sneha yg man baeb private te tae baeb "Top Secret"
+                        <br><br>
+                    </p>
+                    <div class="memory-photo">
+                        <div style="text-align: center; opacity: 0.7;">
+                            <img src="img/special.jpg" alt="Special memory">
+                        </div>
+                    </div>
+                </div>
+                <div class="memory-icon">💝</div>
+            </div>
+
+                <div class="memory-item">
+                <div class="memory-content">
+                    <div class="memory-date">Khg kmean thgai job</div>
+                    <h3 class="memory-title">KHG KNEA</h3>
+                    <p class="memory-description">
+                      YY tam trong bby b mean ss ot del chlus knea te tae nis jea lerk ti 1 del b jes mnhe mnhok. Kapit man mnhe mnhok ror rg o jong jenh pi o te tae its more than like b jg ban attention pi bby ng na tae bby trv jam tha <strong>B sl O</strong> b ror rg pi prus b sl o klang b jg oy o focus ler b tae b. Sl knea yu yu jes tah ror rg ss tae pel klas ror rg vea sby myang pel klas serch pel klas terk pnek lv b som bby na b ror rg kom pkan b ey na</p>
+                    <div class="memory-photo">
+                        <div style="text-align: center; opacity: 0.7;">
+                            <img src="img/khg.jpg" alt="Special memory">
+                        </div>
+                    </div>
+                </div>
+                <div class="memory-icon">💝</div>
+            </div>
+            
+        </div>
+
+        <div class="navigation-section">
+            <a href="firstpage.html" class="nav-btn back-btn">← Back</a>
+            <a href="thirdpage.html" class="nav-btn">Continue →</a>
+        </div>
+    </div>
+
+    <script>
+        // Create starry sky
+        function createStars() {
+            const starsContainer = document.getElementById('stars');
+            
+            // Create regular stars
+            for (let i = 0; i < 200; i++) {
+                const star = document.createElement('div');
+                star.classList.add('star');
+                star.style.left = Math.random() * 100 + '%';
+                star.style.top = Math.random() * 100 + '%';
+                star.style.width = Math.random() * 3 + 1 + 'px';
+                star.style.height = star.style.width;
+                star.style.animationDelay = Math.random() * 3 + 's';
+                star.style.animationDuration = (Math.random() * 2 + 2) + 's';
+                starsContainer.appendChild(star);
+            }
+
+            // Create shooting stars
+            setInterval(() => {
+                const shootingStar = document.createElement('div');
+                shootingStar.classList.add('shooting-star');
+                shootingStar.style.left = Math.random() * 100 + '%';
+                shootingStar.style.top = Math.random() * 50 + '%';
+                shootingStar.style.width = Math.random() * 100 + 50 + 'px';
+                shootingStar.style.animationDuration = (Math.random() * 2 + 2) + 's';
+                starsContainer.appendChild(shootingStar);
+                
+                setTimeout(() => {
+                    shootingStar.remove();
+                }, 3000);
+            }, 8000);
+        }
+
+        // Initialize stars when page loads
+        document.addEventListener('DOMContentLoaded', createStars);
+
+        // Floating hearts animation
+        function createHeart() {
+            const heart = document.createElement('div');
+            heart.classList.add('heart');
+            heart.innerHTML = '♥';
+            heart.style.left = Math.random() * 100 + '%';
+            heart.style.animationDuration = (Math.random() * 3 + 2) + 's';
+            heart.style.opacity = Math.random() * 0.3 + 0.1;
+            heart.style.fontSize = (Math.random() * 10 + 15) + 'px';
+            
+            document.getElementById('hearts').appendChild(heart);
+            
+            setTimeout(() => {
+                heart.remove();
+            }, 5000);
+        }
+
+        setInterval(createHeart, 3000);
+
+        // Add sparkle effect on memory items hover
+        document.querySelectorAll('.memory-content').forEach(item => {
+            item.addEventListener('mouseenter', function(e) {
+                createSparkle(e.target);
+            });
+        });
+
+        function createSparkle(element) {
+            const sparkle = document.createElement('div');
+            sparkle.innerHTML = '✨';
+            sparkle.style.position = 'absolute';
+            sparkle.style.left = Math.random() * 100 + '%';
+            sparkle.style.top = Math.random() * 100 + '%';
+            sparkle.style.fontSize = '20px';
+            sparkle.style.zIndex = '1000';
+            sparkle.style.pointerEvents = 'none';
+            sparkle.style.animation = 'sparkleUp 1s ease-out forwards';
+            
+            element.appendChild(sparkle);
+            
+            setTimeout(() => sparkle.remove(), 1000);
+        }
+
+        // Add sparkle animation
+        const sparkleStyle = document.createElement('style');
+        sparkleStyle.textContent = `
+            @keyframes sparkleUp {
+                0% { transform: translateY(0) scale(0); opacity: 1; }
+                100% { transform: translateY(-30px) scale(1); opacity: 0; }
+            }
+        `;
+        document.head.appendChild(sparkleStyle);
+    </script>
+</body>
+</html>
